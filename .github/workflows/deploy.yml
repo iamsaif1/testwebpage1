@@ -2,7 +2,7 @@ name: Build and Deploy to EC2 Instance via GitHub Action
 on:
     push:
         branches:
-            - testwebpage
+            - main
 jobs:
     build:
         runs-on: ubuntu-latest
