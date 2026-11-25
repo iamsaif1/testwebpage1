@@ -28,7 +28,7 @@ jobs:
               with:
                 host: ${{ secrets.EC2_IP }}
                 username: ${{ secrets.EC2_USER }}
-                key:  ${{ secrets.SSH_KEY }}
+                key:  ${{ vars.SSH_KEY }}
                 script: |
                     docker pull saif007alam/testwebpage
                     docker rm -f testpage-container || true
