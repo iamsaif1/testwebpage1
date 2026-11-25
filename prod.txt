@@ -1,0 +1,5 @@
+The server is hosting a html file which has image in docker container.
+I have deployed this page page via Github Action.
+First this file was containerized into docker by creating its image and build code in yaml file.
+Then We pushed the image to the docker hub repository.
+Created a YAML file to pull the image and run deploy steps to EC2.

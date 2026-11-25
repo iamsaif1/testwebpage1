@@ -1,0 +1,35 @@
+name: Build and Deploy to EC2 Instance via GitHub Action
+on:
+    push:
+        branches:
+            - testwebpage
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+
+            - name: Docker Login
+              run : docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
+            
+            - name: Build Docker Image
+              run: docker build -t saif007alam/testwebpage
+
+            - name : Push Docker Image
+              run: docker push saif007alam/testwebpage:latest
+    
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy to EC2 Instance
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets.EC2_IP }}
+                username: ${{ secrets.EC2_USER }}
+                key:  ${{ secrets.SSH_KEY }}
+                script: |
+                    docker pull saif007alam/testwebpage
+                    docker rm -f testpage-container || true
+                    docker run -d -p 80:80 --name testpage-container saif007alam/testwebpage:latest
